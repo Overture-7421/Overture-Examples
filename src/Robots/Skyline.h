@@ -25,6 +25,7 @@ class Skyline : public frc::TimedRobot {
   void TestPeriodic() override;
 
 private:
-  EctoGazeboMotor testMotor {"Slimer2020_Offseason", "BackRightRotation"};
-  EctoGazeboPiston testPiston {"Slimer2020_Offseason", "HoodPiston"};
+  EctoGazeboMotor leftMotor {"TankChassis_clone_0", "LeftChassis"};
+  EctoGazeboMotor rightMotor {"TankChassis_clone_0", "RightChassis"};
+
 };
