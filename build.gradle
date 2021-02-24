@@ -5,7 +5,7 @@ plugins {
 }
 
 def roboRIODeployDir = '"' + '/home/lvuser/deploy/' + '"'
-def ntRemoteServer = '"' + '127.0.0.1' + '"'
+def ntRemoteServer = '"' + 'gz.porebazu.tech' + '"'
 def ntRemotePort = '1735'
 
 
