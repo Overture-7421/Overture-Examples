@@ -25,7 +25,13 @@ class Skyline : public frc::TimedRobot {
   void TestPeriodic() override;
 
 private:
-  EctoGazeboMotor leftMotor {"TankChassis_clone_0", "LeftChassis"};
-  EctoGazeboMotor rightMotor {"TankChassis_clone_0", "RightChassis"};
+  EctoGazeboMotor leftMotor {"TankChassis", "LeftChassis"};
+  EctoGazeboMotor rightMotor {"TankChassis", "RightChassis"};
 
+
+  /**
+   * Se van a ocupar dos PIDs, uno que controla la velocidad del lado izquierdo y otra del lado derecho
+   */
+   frc2::PIDController leftPID {0.0, 0.0, 0.0};
+    frc2::PIDController rightPID {0.0, 0.0, 0.0};
 };

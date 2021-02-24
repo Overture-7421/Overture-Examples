@@ -1,8 +1,8 @@
 #include "Skyline.h"
 #include "frc2/command/CommandScheduler.h"
 #include <frc/smartdashboard/SmartDashboard.h>
-#define M_PI 3.14159265358979323846
 
+#define M_PI 3.14159265358979323846
 
 
 /**
@@ -31,27 +31,27 @@
 Skyline::Skyline() : TimedRobot() {}
 
 void Skyline::RobotInit() {
-   /**
-    * Configuramos el motor para que use el Quadencoder como sensor para la velocidad.
-    * 
-    * Los QuadEncoders son relativos, es decir, cuando el robot enciende, ese es su cero. Si se mueven incrementan o disminyuen. Esto quiere decir que no saben donde están realmente, solo saben
-    *   que tanto se han movido desde que empezaron a contar. Los encoders son utiles para controlar velocidades.
-    * 
-    * 
-    * Los Potenciometros son abosultos, es decir, su cero siempre es el mismo. Son utiles para controlar torretas, angulo de brazos, o cualquier cosa que ocupemos una referencia absoluta.
-    * 
-    * Una manera de diferenciarlos es considerar que pasaría si encendemos el robot, giramos una llanta y lo apagamos. ¿Que pasaría la siguiente vez que lo encendamos?
-    * 
-    *   Si asumimos que la primera vez que lo prendamos el encoder y potenciometro dieron cero, despues de moverlo ambos podrían dar el mismo resultado.
-    *   Si apagamos y volvemos a prender el robot, el potenciometro seguiría dando el mismo valor anterior, pero el encoder volvería a dar cero. 
-    * */
+    /**
+     * Configuramos el motor para que use el Quadencoder como sensor para la velocidad.
+     *
+     * Los QuadEncoders son relativos, es decir, cuando el robot enciende, ese es su cero. Si se mueven incrementan o disminyuen. Esto quiere decir que no saben donde están realmente, solo saben
+     *   que tanto se han movido desde que empezaron a contar. Los encoders son utiles para controlar velocidades.
+     *
+     *
+     * Los Potenciometros son abosultos, es decir, su cero siempre es el mismo. Son utiles para controlar torretas, angulo de brazos, o cualquier cosa que ocupemos una referencia absoluta.
+     *
+     * Una manera de diferenciarlos es considerar que pasaría si encendemos el robot, giramos una llanta y lo apagamos. ¿Que pasaría la siguiente vez que lo encendamos?
+     *
+     *   Si asumimos que la primera vez que lo prendamos el encoder y potenciometro dieron cero, despues de moverlo ambos podrían dar el mismo resultado.
+     *   Si apagamos y volvemos a prender el robot, el potenciometro seguiría dando el mismo valor anterior, pero el encoder volvería a dar cero.
+     * */
     leftMotor.setFeedbackMode(MotorFeedbackMode::QuadEncoder);
     rightMotor.setFeedbackMode(MotorFeedbackMode::QuadEncoder);
 
 }
 
 
-void Skyline::RobotPeriodic() { 
+void Skyline::RobotPeriodic() {
     /**
      * Podemos usar la SmartDashboard para poder cambiar valores desde la interfaz, en lugar de directo en el código. Esto hace que las calibraciones o pruebas de diferentes valores sea
      * mucho más rapido.
@@ -68,14 +68,14 @@ void Skyline::RobotPeriodic() {
      * 
      * Usualmente para cosas de telemetría (Saber que esta haciendo el robot) usamos RobotPeriodic, queremos ver esa información sin importar en que modo de ejecución esté el robot.
      * */
-    
+
 
     /**
      *  Si ponemos una / en el nombre, creara una subtabla.
      *  Esto se ocupa ahorita porque todos estan conectados a la misma Dashboard, si todos ponen un número llamado LeftVel e intentan usarlo, una persona cambiaría el de todos.
      * 
      * */
-    frc::SmartDashboard::PutNumber("TankChassis0/LeftVel", leftMotor.getVelocity()); 
+    frc::SmartDashboard::PutNumber("TankChassis0/LeftVel", leftMotor.getVelocity());
     frc::SmartDashboard::PutNumber("TankChassis0/RightVel", rightMotor.getVelocity());
 
     /**
@@ -126,7 +126,7 @@ void Skyline::RobotPeriodic() {
     const double leftMotorVel = leftMotor.getVelocity() / codesPerRevWheel * 2 * M_PI;
     const double rightMotorVel = rightMotor.getVelocity() / codesPerRevWheel * 2 * M_PI;
 
-    frc::SmartDashboard::PutNumber("TankChassis0/LeftVelRads", leftMotorVel); 
+    frc::SmartDashboard::PutNumber("TankChassis0/LeftVelRads", leftMotorVel);
     frc::SmartDashboard::PutNumber("TankChassis0/RightVelRads", rightMotorVel);
 
     /**
@@ -135,12 +135,11 @@ void Skyline::RobotPeriodic() {
     *   Gracias a que tenemos la velocidad en radianes por segundo, es cuestion de multiplicarlo por el radio de la llanta. 
     *   Usamos llantas de 6 pulgadas de diametro. El radio en metros es 0.0762.
     *  
-    * */ 
+    * */
 
     const double wheelRadius = 0.0762;
-    frc::SmartDashboard::PutNumber("TankChassis0/LeftVelMeters", leftMotorVel * wheelRadius); 
+    frc::SmartDashboard::PutNumber("TankChassis0/LeftVelMeters", leftMotorVel * wheelRadius);
     frc::SmartDashboard::PutNumber("TankChassis0/RightVelMeters", rightMotorVel * wheelRadius);
-
 
 
 }
@@ -177,18 +176,98 @@ void Skyline::AutonomousPeriodic() {
 
     double leftOut = frc::SmartDashboard::GetNumber("TankChassis0/LeftOut", 0.0);
     double rightOut = frc::SmartDashboard::GetNumber("TankChassis0/RightOut", 0.0);
-    leftMotor.set(leftOut); //Por ahorita no usaremos las ecuaciones que reciben velocidad linear y angular, para simplificar calibrar PIDs despues.
+    leftMotor.set(
+            leftOut); //Por ahorita no usaremos las ecuaciones que reciben velocidad linear y angular, para simplificar calibrar PIDs despues.
     rightMotor.set(rightOut);
 
 }
 
 void Skyline::TeleopInit() {
 
+    /**
+     * Vamos a hacer que las constantes del PID sea configurables desde la Dashboard
+     * Pondremos en el init los números.
+     */
 
+    frc::SmartDashboard::PutNumber("TankChassis0/1.P", 0.0);
+    frc::SmartDashboard::PutNumber("TankChassis0/2.I", 0.0);
+    frc::SmartDashboard::PutNumber("TankChassis0/3.D", 0.0);
+
+    /**
+     * Además del PID, vamos a usar algo llamado Feedforward
+     */
+    frc::SmartDashboard::PutNumber("TankChassis0/4.F", 0.0);
+
+    /**
+     * Vamos a poner el objetivo de velocidad (Setpoint para el PID)
+     */
+    frc::SmartDashboard::PutNumber("TankChassis0/LeftSetpoint", 0.0);
+    frc::SmartDashboard::PutNumber("TankChassis0/RightSetpoint", 0.0);
 }
 
 void Skyline::TeleopPeriodic() {
+    /**
+     * Obtenemos que valor tienen en este momento los PID en la Dashboard
+     */
+    const double p = frc::SmartDashboard::GetNumber("TankChassis0/1.P", 0.0);
+    const double i = frc::SmartDashboard::GetNumber("TankChassis0/2.I", 0.0);
+    const double d = frc::SmartDashboard::GetNumber("TankChassis0/3.D", 0.0);
+    const double f = frc::SmartDashboard::GetNumber("TankChassis0/4.F", 0.0);
 
+    /**
+     * Darle estas constantes a ambos PIDs, solo si han cambiado
+     */
+
+    if( p != leftPID.GetP() ||
+        i != leftPID.GetI() ||
+        d != leftPID.GetD()) {
+        leftPID.SetPID(p, i, d);
+        rightPID.SetPID(p, i, d);
+    }
+
+    /**
+     * Obtener la velocidad objetivo de cada lado del chassis (Setpoints)
+     */
+    const double leftSetpoint = frc::SmartDashboard::GetNumber("TankChassis0/LeftSetpoint", 0.0);
+    const double rightSetpoint = frc::SmartDashboard::GetNumber("TankChassis0/RightSetpoint", 0.0);
+
+    /**
+     * Actualizamos los setpoints de los PID, y obtenemos su salida, esa salida es lo que pasamos al motor
+     */
+
+    leftPID.SetSetpoint(leftSetpoint);
+    rightPID.SetSetpoint(rightSetpoint);
+
+    /**
+     * El Calculate de los PID recibe en donde estamos ahorita, un measurement.
+     *
+     * En este caso, queremos que el PID controle la velocidad en metros por segundo del chassis,
+     * por lo que el measurement tiene que ser la velocidad actual en metros por segundo.
+     *
+     * Lo que nos regrese el Calculate es lo que usamos para actualizar al motor.
+     *
+     * Notar como el motor sigue estando controlado por Porcentaje, pero en lugar de manualmente
+     * decidir a que porcentaje mandarlo, usamos un PID para calcularlo dinamicamente, de manera que llegue a
+     * una velocidad objetivo.
+     */
+
+    const double codesPerRevWheel = 420.0 * 10.0;
+    const double leftMotorVel = leftMotor.getVelocity() / codesPerRevWheel * 2 * M_PI;
+    const double rightMotorVel = rightMotor.getVelocity() / codesPerRevWheel * 2 * M_PI;
+    const double wheelRadius = 0.0762;
+
+    double leftOut = leftPID.Calculate(leftMotorVel * wheelRadius);
+    double rightOut = rightPID.Calculate(rightMotorVel * wheelRadius);
+    /**
+     * Aplicamos el Feedforward
+     * Les explico que es eso durante la sesión, aqui sería mucho texto.
+     */
+
+    leftOut += leftSetpoint * f;
+    rightOut += rightSetpoint * f;
+
+    leftMotor.set(leftOut);
+    rightMotor.set(rightOut);
 }
 
 void Skyline::TestPeriodic() {}
