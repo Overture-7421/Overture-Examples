@@ -41,7 +41,7 @@ frc::ChassisSpeeds Chassis::GetVelocity(){
 // This method will be called once per scheduler run
 void Chassis::Periodic() {
     wheelsVel = GetWheelsVelocity();
-    chassisVel = kinematics.ToChassisSpeeds(GetWheelsVelocity());
+    chassisVel = kinematics.ToChassisSpeeds(wheelsVel);
 
     double leftOut = leftPID.Calculate(wheelsVel.left.to<double>()) + leftFeedforward;
     double rightOut = rightPID.Calculate(wheelsVel.right.to<double>()) + rightFeedforward;
