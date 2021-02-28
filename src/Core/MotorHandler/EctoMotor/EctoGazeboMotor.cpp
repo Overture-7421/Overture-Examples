@@ -345,7 +345,7 @@ double EctoGazeboMotor::getRawPotPosition() const {
 
 EctoGazeboMotor::~EctoGazeboMotor() {
 	updateManager.removeGazeboMotor(this);
-	
+	voltageEntry.SetDouble(0.0);
 	positionEntry.Delete();
 	velocityEntry.Delete();
 	voltageEntry.Delete();
