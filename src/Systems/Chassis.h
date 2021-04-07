@@ -19,6 +19,7 @@
 #include "Core/MotorHandler/EctoMotor/EctoGazeboMotor.h"
 #include <frc/kinematics/DifferentialDriveKinematics.h>
 #include <frc/kinematics/DifferentialDriveOdometry.h>
+#include <Core/IMU/GazeboIMU/GazeboIMU.h>
 
 class Chassis : public frc2::SubsystemBase {
  public:
@@ -29,6 +30,10 @@ class Chassis : public frc2::SubsystemBase {
   frc::DifferentialDriveWheelSpeeds GetWheelsVelocity();
 
   frc::ChassisSpeeds GetVelocity();
+
+  frc::Rotation2d getHeading();  //Implementación ideal, usa las clases de rotation de WPILib
+
+  // double getHeading(); Tambien podemos hacer que regrese un double, para cuando los chicos lo implementen por su cuenta.
 
   /**
    * Will be called periodically whenever the CommandScheduler runs.
@@ -57,5 +62,6 @@ class Chassis : public frc2::SubsystemBase {
   frc::DifferentialDriveKinematics kinematics {0.6_m};
   frc::ChassisSpeeds chassisVel;
   frc::DifferentialDriveWheelSpeeds wheelsVel;
+  GazeboIMU imu {"TankChassis_clone_0", "imu"};
   
 };

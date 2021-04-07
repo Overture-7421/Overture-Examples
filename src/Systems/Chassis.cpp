@@ -59,3 +59,11 @@ void Chassis::PublishTelemetry(){
     frc::SmartDashboard::PutNumber("TankChassis0/LinearVel", chassisVel.vx.to<double>());
     frc::SmartDashboard::PutNumber("TankChassis0/AngularVel", chassisVel.omega.to<double>());
 }
+
+frc::Rotation2d Chassis::getHeading(){
+    return frc::Rotation2d(units::radian_t(imu.getYaw()));
+}
+
+//double Chassis::getHeading(){
+//    return imu.getYaw();
+//}

@@ -38,6 +38,7 @@ void Skyline::TeleopPeriodic() {
     chassisVels.vx = 1_mps;
     chassisVels.omega = 0.5_rad_per_s;
     chassis.SetVelocity(chassisVels);
+    frc::SmartDashboard::PutNumber("Heading", chassis.getHeading().Degrees().to<double>());
 }
 
 void Skyline::TestPeriodic() {}
