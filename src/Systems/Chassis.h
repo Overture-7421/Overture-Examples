@@ -33,6 +33,8 @@ class Chassis : public frc2::SubsystemBase {
 
   frc::Rotation2d getHeading();  //Implementación ideal, usa las clases de rotation de WPILib
 
+  frc::Pose2d getPose();
+
   // double getHeading(); Tambien podemos hacer que regrese un double, para cuando los chicos lo implementen por su cuenta.
 
   /**
@@ -63,5 +65,8 @@ class Chassis : public frc2::SubsystemBase {
   frc::ChassisSpeeds chassisVel;
   frc::DifferentialDriveWheelSpeeds wheelsVel;
   GazeboIMU imu {"TankChassis_clone_0", "imu"};
+
+  frc::DifferentialDriveOdometry odometry{frc::Rotation2d(0_deg)};
+  frc::Pose2d pose;
   
 };

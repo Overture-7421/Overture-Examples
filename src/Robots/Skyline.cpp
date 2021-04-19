@@ -18,14 +18,15 @@ void Skyline::DisabledInit() {
     chassis.SetVelocity(chassisVels);
 }
 
-void Skyline::DisabledPeriodic() {}
+void Skyline::DisabledPeriodic() {
+
+}
 
 void Skyline::AutonomousInit() {
 
 }
 
 void Skyline::AutonomousPeriodic() {
-
 
 }
 
@@ -35,10 +36,17 @@ void Skyline::TeleopInit() {
 
 void Skyline::TeleopPeriodic() {
     frc::ChassisSpeeds chassisVels;
-    chassisVels.vx = 1_mps;
-    chassisVels.omega = 0.5_rad_per_s;
+    chassisVels.vx = units::meters_per_second_t(-joy.GetRawAxis(1));
+    chassisVels.omega = units::radians_per_second_t(-joy.GetRawAxis(0));
     chassis.SetVelocity(chassisVels);
-    frc::SmartDashboard::PutNumber("Heading", chassis.getHeading().Degrees().to<double>());
+
+    const auto pose = chassis.getPose();
+
+    frc::SmartDashboard::PutNumber("TankChassis_clone_0/X", pose.X().to<double>());
+    frc::SmartDashboard::PutNumber("TankChassis_clone_0/Y", pose.Y().to<double>());
+
 }
 
-void Skyline::TestPeriodic() {}
+void Skyline::TestPeriodic() {
+
+}

@@ -48,6 +48,9 @@ void Chassis::Periodic() {
 
     leftMotor.set(leftOut);
     rightMotor.set(rightOut);
+    auto leftDistance = units::meter_t(leftMotor.getPosition() / codesPerRevWheel * 2 * M_PI * wheelRadius);
+    auto rightDistance = units::meter_t(rightMotor.getPosition() / codesPerRevWheel * 2 * M_PI * wheelRadius);
+    pose = odometry.Update(getHeading(), leftDistance, rightDistance);
     PublishTelemetry();
 }
 
@@ -63,6 +66,11 @@ void Chassis::PublishTelemetry(){
 frc::Rotation2d Chassis::getHeading(){
     return frc::Rotation2d(units::radian_t(imu.getYaw()));
 }
+
+frc::Pose2d Chassis::getPose(){
+    return pose;
+}
+
 
 //double Chassis::getHeading(){
 //    return imu.getYaw();

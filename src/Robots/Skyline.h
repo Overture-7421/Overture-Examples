@@ -9,6 +9,7 @@
 
 #include <frc/TimedRobot.h>
 #include "Systems/Chassis.h"
+#include <frc/Joystick.h>
 
 class Skyline : public frc::TimedRobot {
  public:
@@ -25,4 +26,5 @@ class Skyline : public frc::TimedRobot {
 
 private:
   Chassis chassis;
+  frc::Joystick joy {0};
 };

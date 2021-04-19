@@ -19,4 +19,3 @@ private:
 	std::shared_ptr<nt::NetworkTable> imuTable;
 	nt::NetworkTableEntry roll, pitch, yaw;
 };
-
